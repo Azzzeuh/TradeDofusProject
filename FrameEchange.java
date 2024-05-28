@@ -1,22 +1,35 @@
 import java.awt.*;
+import java.util.ArrayList;
 import javax.swing.*;
 
 public class FrameEchange extends JFrame {
+
+    private ListeEchange list = new ListeEchange("Achats Banque");
+    private ArrayList<String> listType = list.getListType();
+
     private JTextField coutTextField;
     private JTextField estimeTextField; 
     private JTextField revenuTextField;
-    private JTextField typeTextField;
+    private JList<String> typeJList;
+    private DefaultListModel<String> listModel;
 
     public FrameEchange() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Gestion d'échanges");
         this.setLocation(50, 50);
+        this.setSize(900, 700); 
 
         // Initialisation des champs de texte
-        coutTextField = new JTextField(20);
-        estimeTextField = new JTextField(20);
-        revenuTextField = new JTextField(20);
-        typeTextField = new JTextField(20);
+        coutTextField = new JTextField(10);
+        estimeTextField = new JTextField(10);
+        revenuTextField = new JTextField(10);
+
+        // Initialisation de la liste des types avec un modèle de liste
+        listModel = new DefaultListModel<>();
+        for (String type : listType) {
+            listModel.addElement(type);
+        }
+        typeJList = new JList<>(listModel);
 
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -25,7 +38,7 @@ public class FrameEchange extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         this.add(coutTextField, gbc);
 
         gbc.gridx = 1;
@@ -38,9 +51,10 @@ public class FrameEchange extends JFrame {
 
         gbc.gridx = 3;
         gbc.gridy = 0;
-        this.add(typeTextField, gbc);
-
-        // Autres composants peuvent être ajoutés ici
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        this.add(new JScrollPane(typeJList), gbc);  // Ajout d'un JScrollPane pour la JList
 
         this.pack();
         this.setVisible(true);
@@ -50,3 +64,4 @@ public class FrameEchange extends JFrame {
         new FrameEchange();
     }
 }
+
