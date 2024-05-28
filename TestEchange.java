@@ -24,17 +24,17 @@ public class TestEchange {
 
         System.err.println('\n');
         System.out.println("Test ajustement estime échange 1");
-        list.getEchange(0).ajusterEstime(18000);
+        list.getEchange(0).modifierEstime(18000);
         System.err.println(list.getEchange(0));
 
         System.err.println('\n');
         System.out.println("Test ajustement revenu échange 2");
-        list.getEchange(1).ajusterRevenu(17000);
+        list.getEchange(1).modifierRevenu(17000);
         System.err.println(list.getEchange(1));
 
         System.err.println('\n');
         System.out.println("Test ajustement type échange 3");
-        list.getEchange(2).ajusterType("Equipement", listType);
+        list.getEchange(2).modifierType("Equipement", listType);
         System.err.println(list.getEchange(2));
 
         list.ajouterType("abcd");
@@ -42,7 +42,7 @@ public class TestEchange {
 
         System.err.println('\n');
         System.out.println("Test ajustement type échange 3");
-        list.getEchange(2).ajusterType("abcd", listType);
+        list.getEchange(2).modifierType("abcd", listType);
         System.err.println(list.getEchange(2));
 
         for(int i = 0; i < listType.size(); i++)

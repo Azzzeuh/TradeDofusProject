@@ -35,7 +35,7 @@ public class Echange {
     public String getTypeEch        () { return this.typeEch; }
 
     // Méthode pour modifier certains paramètres des échanges, en cas d'erreur
-    public boolean ajusterCout(int cout)
+    public boolean modifierCout(int cout)
     {
         if(cout >= 0)
         {
@@ -45,7 +45,7 @@ public class Echange {
         return false;    
     }
 
-    public boolean ajusterEstime(int estime)
+    public boolean modifierEstime(int estime)
     {
         if(estime > 0)
         {
@@ -55,7 +55,7 @@ public class Echange {
         return false;
     }
     
-    public boolean ajusterRevenu(int revenu)
+    public boolean modifierRevenu(int revenu)
     {
         if(revenu >= 0)
         {
@@ -65,7 +65,7 @@ public class Echange {
         return false;
     }
 
-    public boolean ajusterType(String type, ArrayList<String> list)
+    public boolean modifierType(String type, ArrayList<String> list)
     {
         if (list.contains(type))
         {
