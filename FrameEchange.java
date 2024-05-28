@@ -10,6 +10,12 @@ public class FrameEchange extends JFrame {
     private JTextField coutTextField;
     private JTextField estimeTextField; 
     private JTextField revenuTextField;
+    private JLabel coutLabel;
+    private JLabel estimeLabel;
+    private JLabel revenuLabel;
+
+    private JButton ajouterButton;
+
     private JList<String> typeJList;
     private DefaultListModel<String> listModel;
 
@@ -24,37 +30,79 @@ public class FrameEchange extends JFrame {
         estimeTextField = new JTextField(10);
         revenuTextField = new JTextField(10);
 
+        // Initialisation label des champs de texte
+        coutLabel   = new JLabel("Coût : ");
+        estimeLabel = new JLabel("Valeur : ");
+        revenuLabel = new JLabel("Revenu : ");
+
+        // Initialisation bouton ajouter un échange
+        ajouterButton = new JButton(" Ajouter ");
+
         // Initialisation de la liste des types avec un modèle de liste
         listModel = new DefaultListModel<>();
         for (String type : listType) {
             listModel.addElement(type);
         }
         typeJList = new JList<>(listModel);
+        typeJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
+        // Initialisation GridBagLayout
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // Ajout des composants avec GridBagLayout
+        Insets insets = new Insets(1, 1, 1, 1);
+
+        // Ajout des composants coût 
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = insets;
+        this.add(coutLabel, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.insets = insets;
         this.add(coutTextField, gbc);
 
+        // Ajout des composants valeur estimé
         gbc.gridx = 1;
         gbc.gridy = 0;
+        gbc.insets = insets;
+        this.add(estimeLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.insets = insets;
         this.add(estimeTextField, gbc);
 
+        // Ajout des composants revenus 
         gbc.gridx = 2;
         gbc.gridy = 0;
+        gbc.insets = insets;
+        this.add(revenuLabel, gbc);
+
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.insets = insets;
         this.add(revenuTextField, gbc);
 
+        // Ajout de la liste des types
         gbc.gridx = 3;
         gbc.gridy = 0;
+        gbc.gridheight = 2;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
-        this.add(new JScrollPane(typeJList), gbc);  // Ajout d'un JScrollPane pour la JList
+        gbc.insets = new Insets(1, 5, 1, 1);
+        this.add(new JScrollPane(typeJList), gbc);
+
+        // Ajout d'un bouton pour ajouter l'échange à la liste
+        gbc.gridx = 4;
+        gbc.gridy = 0;
+        gbc.gridheight = 2;
+        gbc.insets = new Insets(10, 50, 10, 20);
+        this.add(ajouterButton, gbc);
+        
 
         this.pack();
         this.setVisible(true);
