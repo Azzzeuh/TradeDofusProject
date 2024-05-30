@@ -33,7 +33,7 @@ public class FrameEchange extends JFrame implements ActionListener{
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Gestion d'échanges");
-        this.setLocation(50, 50);
+        this.setLocation(100, 100);
 
         // Initialisation des champs de texte
         coutTextField = new JTextField(10);
@@ -54,7 +54,7 @@ public class FrameEchange extends JFrame implements ActionListener{
 
         // Initialisation bouton 
         ajouterButton = new JButton(" Ajouter ");
-        afficherListe = new JButton("Afficher lise");
+        afficherListe = new JButton("Afficher liste");
 
         // Initialisation de la liste des types avec un modèle de liste
         listModel = new DefaultListModel<>();
@@ -125,10 +125,11 @@ public class FrameEchange extends JFrame implements ActionListener{
         gbc.gridx = 5;
         gbc.gridy = 0;
         gbc.gridheight = 2;
-        gbc.insets = new Insets(10, 50, 10, 20);
+        gbc.insets = new Insets(10, 20, 10, 20);
         this.add(afficherListe, gbc);
 
         this.ajouterButton.addActionListener( this );
+        this.afficherListe.addActionListener( this );
 
         // this.addComponentListener(new gereFrame());
 
@@ -147,6 +148,11 @@ public class FrameEchange extends JFrame implements ActionListener{
             typeEch = typeJList.getSelectedValue();
             this.list.ajouterEchange(new Echange(coutEch, estimeEch, revenuEch, typeEch));
         }
+
+        if(e.getSource() == this.afficherListe)
+        {
+            new FrameListeEchange(this.list).setLocation(100 + this.getWidth(), 100);
+        } 
     }
 
     // public class gereFrame extends ComponentAdapter
