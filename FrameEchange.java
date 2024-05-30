@@ -1,8 +1,12 @@
 import java.awt.*;
-import java.util.ArrayList;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 
-public class FrameEchange extends JFrame {
+import java.util.ArrayList;
+
+public class FrameEchange extends JFrame implements ActionListener{
 
     private ListeEchange list = new ListeEchange("Achats Banque");
     private ArrayList<String> listType = list.getListType();
@@ -14,29 +18,43 @@ public class FrameEchange extends JFrame {
     private JLabel estimeLabel;
     private JLabel revenuLabel;
 
+    private int coutEch;
+    private int estimeEch;
+    private int revenuEch;
+    private String typeEch;
+
     private JButton ajouterButton;
+    private JButton afficherListe;
 
     private JList<String> typeJList;
     private DefaultListModel<String> listModel;
 
     public FrameEchange() {
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Gestion d'échanges");
         this.setLocation(50, 50);
-        this.setSize(900, 700); 
 
         // Initialisation des champs de texte
         coutTextField = new JTextField(10);
         estimeTextField = new JTextField(10);
         revenuTextField = new JTextField(10);
+        this.coutTextField.setFont(new Font("Arial", Font.PLAIN, 18));
+        this.estimeTextField.setFont(new Font("Arial", Font.PLAIN, 18));
+        this.revenuTextField.setFont(new Font("Arial", Font.PLAIN, 18));
 
         // Initialisation label des champs de texte
         coutLabel   = new JLabel("Coût : ");
         estimeLabel = new JLabel("Valeur : ");
         revenuLabel = new JLabel("Revenu : ");
+        this.coutLabel.setFont(new Font("Arial", Font.PLAIN, 30));
+        this.estimeLabel.setFont(new Font("Arial", Font.PLAIN, 30));
+        this.revenuLabel.setFont(new Font("Arial", Font.PLAIN, 30));
+        
 
-        // Initialisation bouton ajouter un échange
+        // Initialisation bouton 
         ajouterButton = new JButton(" Ajouter ");
+        afficherListe = new JButton("Afficher lise");
 
         // Initialisation de la liste des types avec un modèle de liste
         listModel = new DefaultListModel<>();
@@ -102,14 +120,47 @@ public class FrameEchange extends JFrame {
         gbc.gridheight = 2;
         gbc.insets = new Insets(10, 50, 10, 20);
         this.add(ajouterButton, gbc);
-        
+
+        // Ajout d'un bouton pour afficher la liste des échanges
+        gbc.gridx = 5;
+        gbc.gridy = 0;
+        gbc.gridheight = 2;
+        gbc.insets = new Insets(10, 50, 10, 20);
+        this.add(afficherListe, gbc);
+
+        this.ajouterButton.addActionListener( this );
+
+        // this.addComponentListener(new gereFrame());
 
         this.pack();
         this.setVisible(true);
     }
 
+
+    public void actionPerformed(ActionEvent e) 
+    {
+        if(e.getSource() == this.ajouterButton)
+        {
+            coutEch = Integer.parseInt(coutTextField.getText());
+            estimeEch = Integer.parseInt(estimeTextField.getText());
+            revenuEch = Integer.parseInt(revenuTextField.getText());
+            typeEch = typeJList.getSelectedValue();
+            this.list.ajouterEchange(new Echange(coutEch, estimeEch, revenuEch, typeEch));
+        }
+    }
+
+    // public class gereFrame extends ComponentAdapter
+    // {
+    //     public void ComponentMoved(ComponentEvent e)
+    //     {
+    //         Point p = new Point();
+    //         p = FrameEchange.this.getLocation();
+    //         FrameEchange.this.connexion.deplacerFListe(p);
+    //     }
+    // }
     public static void main(String[] args) {
         new FrameEchange();
     }
 }
+
 
