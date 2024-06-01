@@ -1,79 +1,61 @@
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
-public class FrameListeEchange extends JFrame 
-{
-    private int     numEch;
-    private int     coutEch;
-    private int     estimeEch;
-    private int     revenuEch;
-    private String  typeEch;
+public class FrameListeEchange extends JFrame {
     private String[] nomColonne = { "Numéro", "Coût", "Valeur", "Revenu", "Type" };
-    private JLabel nomCol;
 
-    public FrameListeEchange(ListeEchange list) 
-    {
-
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public FrameListeEchange(ListeEchange list) {
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setTitle("Liste des échanges");
 
-        // Initialisation GridBagLayout
-        this.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-
-        for(int i = 0; i < 5; i++)
-        {
-            nomCol = new JLabel(nomColonne[i]);
-            nomCol.setFont(new Font("Arial", Font.PLAIN, 30));
-            gbc.gridx = i;
-            gbc.gridy = 0;
-            this.add(nomCol, gbc);
+        // Initialisation du tableau des échanges
+        String[][] data = new String[list.getTaille()][5];
+        for (int y = 0; y < list.getTaille(); y++) {
+            Echange echange = list.getEchange(y);
+            data[y][0] = String.valueOf(echange.getNumEchange());
+            data[y][1] = String.valueOf(echange.getCoutEchange());
+            data[y][2] = String.valueOf(echange.getEstimeEchange());
+            data[y][3] = String.valueOf(echange.getRevenuEstime());
+            data[y][4] = echange.getTypeEch();
         }
 
-        for(int y = 0; y < list.getTaille(); y++)
-        {
-                numEch = list.getEchange(y).getNumEchange();
-                coutEch = list.getEchange(y).getCoutEchange();
-                estimeEch = list.getEchange(y).getEstimeEchange();
-                revenuEch = list.getEchange(y).getRevenuEstime();
-                typeEch = list.getEchange(y).getTypeEch();
+        JTable table = new JTable(data, nomColonne);
+        table.setFont(new Font("Arial", Font.PLAIN, 15));
+        table.setRowHeight(20);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-                gbc.gridx = 0;
-                gbc.gridy = y + 1;
-                this.add(new JLabel(numEch + ""), gbc);
+        JScrollPane scrollPane = new JScrollPane(table);
 
-                gbc.gridx = 1;
-                gbc.gridy = y + 1;
-                this.add(new JLabel(coutEch + ""), gbc);
-
-                gbc.gridx = 2;
-                gbc.gridy = y + 1;
-                this.add(new JLabel(estimeEch + ""), gbc);
-
-                gbc.gridx = 3;
-                gbc.gridy = y + 1;
-                this.add(new JLabel(revenuEch + ""), gbc);
-
-                gbc.gridx = 4;
-                gbc.gridy = y + 1;
-                this.add(new JLabel(typeEch), gbc);
-        }
-
-
-        // this.addComponentListener(new gereFrame());
+        this.add(scrollPane, BorderLayout.CENTER);
 
         this.pack();
+
+        adjustLastColumnWidth(table, scrollPane.getViewport().getWidth());
+        
         this.setVisible(true);
     }
 
-    // public class gereFrame extends ComponentAdapter
-    // {
-    //     public void ComponentMoved(ComponentEvent e)
-    //     {
-    //         Point p = new Point();
-    //         p = FrameListeEchange.this.getLocation();
-    //         FrameListeEchange.this.connexion.deplacerFEchange(p);
-    //     }
-    // }
-}
+    private void adjustLastColumnWidth(JTable table, int viewportWidth) {
+        TableColumnModel columnModel = table.getColumnModel();
+        int lastColumnIndex = columnModel.getColumnCount() - 1;
+        int width = 15; // Min width
+        for (int row = 0; row < table.getRowCount(); row++) {
+            TableCellRenderer renderer = table.getCellRenderer(row, lastColumnIndex);
+            Component comp = table.prepareRenderer(renderer, row, lastColumnIndex);
+            width = Math.max(comp.getPreferredSize().width + 1, width);
+        }
+        columnModel.getColumn(lastColumnIndex).setPreferredWidth(width);
 
+        // Ajuster les autres colonnes pour occuper l'espace restant
+        int remainingWidth = viewportWidth - width;
+        int numColumns = columnModel.getColumnCount() - 1;
+
+        for (int i = 0; i < numColumns; i++) {
+            columnModel.getColumn(i).setPreferredWidth(remainingWidth / numColumns);
+        }
+    }
+
+}
