@@ -14,15 +14,19 @@ public class FrameEchange extends JFrame implements ActionListener{
     private JTextField coutTextField;
     private JTextField estimeTextField; 
     private JTextField revenuTextField;
+
     private JLabel coutLabel;
     private JLabel estimeLabel;
     private JLabel revenuLabel;
+
+    private JFileChooser imageJFileChooser;
 
     private int coutEch;
     private int estimeEch;
     private int revenuEch;
     private String typeEch;
 
+    private JButton ajouterImageJButton;
     private JButton ajouterButton;
     private JButton afficherListe;
 
@@ -51,9 +55,12 @@ public class FrameEchange extends JFrame implements ActionListener{
         this.estimeLabel.setFont(new Font("Arial", Font.PLAIN, 30));
         this.revenuLabel.setFont(new Font("Arial", Font.PLAIN, 30));
         
+        // Initialisation fileChooser
+        imageJFileChooser = new JFileChooser();
 
         // Initialisation bouton 
-        ajouterButton = new JButton(" Ajouter ");
+        ajouterButton = new JButton("Ajouter échange");
+        ajouterImageJButton  = new JButton("Ajouter image");
         afficherListe = new JButton("Afficher liste");
 
         // Initialisation de la liste des types avec un modèle de liste
@@ -128,10 +135,15 @@ public class FrameEchange extends JFrame implements ActionListener{
         gbc.insets = new Insets(10, 20, 10, 20);
         this.add(afficherListe, gbc);
 
+        // Ajout d'un bouton pour ajouter image
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        this.add(ajouterImageJButton, gbc);
+
         this.ajouterButton.addActionListener( this );
         this.afficherListe.addActionListener( this );
-
-        // this.addComponentListener(new gereFrame());
+        this.ajouterImageJButton.addActionListener( this );
 
         this.pack();
         this.setVisible(true);
@@ -149,21 +161,17 @@ public class FrameEchange extends JFrame implements ActionListener{
             this.list.ajouterEchange(new Echange(coutEch, estimeEch, revenuEch, typeEch));
         }
 
+        if(e.getSource() == this.ajouterImageJButton)
+        {
+            new ImageFileChooser();
+        }
+
         if(e.getSource() == this.afficherListe)
         {
             new FrameListeEchange(this.list).setLocation(100 + this.getWidth(), 100);
         } 
     }
 
-    // public class gereFrame extends ComponentAdapter
-    // {
-    //     public void ComponentMoved(ComponentEvent e)
-    //     {
-    //         Point p = new Point();
-    //         p = FrameEchange.this.getLocation();
-    //         FrameEchange.this.connexion.deplacerFListe(p);
-    //     }
-    // }
     public static void main(String[] args) {
         new FrameEchange();
     }
